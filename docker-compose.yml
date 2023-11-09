@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - database
+      - s3
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/app
+    command: "gunicorn src.entrypoint.web.app:web_app --bind 0.0.0.0:8001 --worker-class aiohttp.GunicornWebWorker"
+    environment:
+      - PROJECT__ENVIRONMENT=${PROJECT__ENVIRONMENT}
+      - SERVER__ADDRESS=http://0.0.0.0:8001
+
+      - POSTGRES__SERVER=database
+      - POSTGRES__SCHEMA=public
+      - POSTGRES__USER=${POSTGRES__USER}
+      - POSTGRES__PASSWORD=${POSTGRES__PASSWORD}
+      - POSTGRES__DB=${POSTGRES__DB}
+
+      - S3__URL=http://s3:9000
+      - S3__BUCKET=local
+
+  database:
+    image: postgres:14
+    ports:
+      - ${POSTGRES__PORT}:${POSTGRES__PORT}
+    expose:
+      - ${POSTGRES__PORT}
+    command: [ "postgres", "-p", "${POSTGRES__PORT}", "-c", "log_statement=all" ]
+    environment:
+      POSTGRES_USER: ${POSTGRES__USER}
+      POSTGRES_PASSWORD: ${POSTGRES__PASSWORD}
+      POSTGRES_DB: ${POSTGRES__DB}
+
+  s3:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: "minio server /data --console-address :9100"
+    ports:
+      - "9000:9000"  # Minio API
+      - "9100:9100"  # Minio UI
