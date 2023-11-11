@@ -12,5 +12,10 @@ modelclass = dataclass(eq=False, kw_only=True)
 class Entity(ABC):
     """Сущность."""
 
+
+@modelclass
+class StandartEntity(ABC):
+    """Стандартная для проекта сущность."""
+
     id: PrimaryKey | ToBeGenerated = ToBeGenerated
     created_at: datetime.datetime | ToBeGenerated = ToBeGenerated

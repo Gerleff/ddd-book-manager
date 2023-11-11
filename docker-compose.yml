@@ -12,7 +12,7 @@ services:
       - "8001:8001"
     volumes:
       - ./:/app
-    command: "gunicorn src.entrypoint.web.app:web_app --bind 0.0.0.0:8001 --worker-class aiohttp.GunicornWebWorker"
+    command: "gunicorn src.entrypoints.web.app:web_app --bind 0.0.0.0:8001 --worker-class aiohttp.GunicornWebWorker"
     environment:
       - PROJECT__ENVIRONMENT=${PROJECT__ENVIRONMENT}
       - SERVER__ADDRESS=http://0.0.0.0:8001

@@ -1,8 +1,8 @@
 import pytest
-from aiohttp.test_utils import TestClient, TestServer
+from aiohttp.test_utils import TestClient
 
-from entrypoint.web.app import create_app
-from entrypoint.web.dependency import get_s3_client
+from entrypoints.web.app import create_app
+from entrypoints.web.dependency import get_s3_client
 
 
 @pytest.fixture(scope="session")
@@ -13,8 +13,5 @@ async def s3_client(event_loop):
 
 
 @pytest.fixture
-async def client(event_loop) -> TestClient:
-    server = TestServer(create_app())
-    await server.start_server()
-    yield TestClient(server)
-    await server.close()
+async def client(aiohttp_client, event_loop) -> TestClient:
+    return await aiohttp_client(create_app())

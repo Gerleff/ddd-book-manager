@@ -4,7 +4,7 @@ COPY ./poetry.lock /app/
 COPY ./pyproject.toml /app
 
 ENV PYTHONPATH=${PYTHONPATH}:/app/src:/app
-ENV ALEMBIC_CONFIG=/app/src/infrastructure/connector/sqla/alembic/alembic.ini
+ENV ALEMBIC_CONFIG=/app/src/infrastructure/connectors/sqla/alembic/alembic.ini
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
   PYTHONHASHSEED=random \

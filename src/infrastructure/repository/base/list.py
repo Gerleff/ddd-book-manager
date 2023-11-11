@@ -1,6 +1,6 @@
 """Поддержка выдачи списков."""
 from abc import ABC
-from enum import Enum
+from enum import Enum, auto
 from typing import Any, Sequence
 
 from attrs import define
@@ -10,13 +10,14 @@ from config import settings
 from infrastructure.repository.base.base import BaseRepository, Query, RepositoryModel
 
 
-class FilterOperator(str, Enum):
+class FilterOperator(Enum):
     """Операторы фильтров."""
 
-    EQ = "eq"
+    EQUAL = auto()
+    IN = auto()
 
 
-filter_operator_method_map = {FilterOperator.EQ: "__eq__"}
+filter_operator_method_map = {FilterOperator.EQUAL: "__eq__", FilterOperator.IN: "in_"}
 
 
 @define(frozen=True)
@@ -25,7 +26,7 @@ class SQLFilter:
 
     field: str
     value: Any
-    operator: FilterOperator = FilterOperator.EQ
+    operator: FilterOperator = FilterOperator.EQUAL
 
     def modify_query(self, query: Query, field_column_map: dict) -> Query:
         """Модифицировать запрос согласно фильтру."""

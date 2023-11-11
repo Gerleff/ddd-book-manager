@@ -12,6 +12,10 @@ deploy:
 	# ******* Docker *******
 	docker-compose up
 
+makemigration:
+	# ******* Pytest *******
+	poetry run alembic upgrade head
+
 test:
 	# ******* Pytest *******
 	poetry run pytest tests

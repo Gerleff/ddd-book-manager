@@ -6,9 +6,9 @@ from attrs import define
 
 from domain.book.dto import CreateBookDTO
 from domain.book.model import Book
-from infrastructure.connector.s3.base.acid import store_in_s3_atomic
-from infrastructure.connector.s3.base.client import S3Client
-from infrastructure.connector.s3.service import generate_path_to_store_book_file
+from infrastructure.connectors.s3.base.acid import store_in_s3_atomic
+from infrastructure.connectors.s3.base.client import S3Client
+from infrastructure.connectors.s3.service import generate_path_to_store_book_file
 from infrastructure.uow.main import UnitOfWork
 
 

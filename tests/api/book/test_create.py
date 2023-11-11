@@ -6,9 +6,8 @@ from aiohttp import FormData
 from aiohttp.test_utils import TestClient
 
 from domain.book.model import Book
-from entrypoint.web.endpoint.book import BOOKS_URL_PREFIX
-from entrypoint.web.shared.encoder import jsonable_encoder
-
+from entrypoints.web.endpoints.book import BOOKS_URL_PREFIX
+from entrypoints.web.shared.encoder import jsonable_encoder
 
 _path_to_test_file = (Path(__file__).parents[2] / "files/Test.docx").resolve()
 
@@ -59,13 +58,14 @@ async def test_create_422_absent_fields(client: TestClient, book_model: Book, fi
     assert all(field in result_json["detail"] for field in fields), result_json
 
 
-async def test_concurent(book_model: Book, another_book_model: Book, client: TestClient):
+async def test_concurent(book_model: Book, unavailable_book_model: Book, client: TestClient):
     async def _request(data):
         async with client.post(f"{BOOKS_URL_PREFIX}", data=data) as response:
             assert response.status == 201, await response.json()
         return True
 
     result = await asyncio.gather(
-        *[_request(data) for data in (_get_form_data_from(book_model), _get_form_data_from(another_book_model))] * 20
+        *[_request(data) for data in (_get_form_data_from(book_model), _get_form_data_from(unavailable_book_model))]
+        * 20
     )
     assert len(result) == 40

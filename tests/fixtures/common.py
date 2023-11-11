@@ -4,7 +4,7 @@ from typing import Generator
 import pytest_asyncio
 
 
-@pytest_asyncio.fixture(scope='session', autouse=True)
+@pytest_asyncio.fixture(scope="session", autouse=True)
 def event_loop() -> Generator:
     """Позволяет использовать event loop."""
     try:

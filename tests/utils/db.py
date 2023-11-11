@@ -8,7 +8,7 @@ from alembic.config import Config as AlembicConfig
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 
-from infrastructure.connector.sqla.base import metadata
+from infrastructure.connectors.sqla.base import metadata
 
 logger = logging.getLogger(__name__)
 

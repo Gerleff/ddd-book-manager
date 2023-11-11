@@ -3,11 +3,11 @@ import datetime
 
 from domain.book.dto import CreateBookDTO
 from domain.book.values import BookAuthor, BookGenre, BookName
-from domain.shared.base import Entity, modelclass
+from domain.shared.base import Entity, StandartEntity, modelclass
 
 
 @modelclass
-class Book(Entity):
+class Book(StandartEntity):
     """Сущность Книга."""
 
     name: BookName
@@ -27,3 +27,17 @@ class Book(Entity):
             date_published=dto.date_published,
             file_name=dto.file_name,
         )
+
+
+@modelclass
+class BookAuthorDeniedList(Entity):
+    """Серый список авторов книг."""
+
+    value: BookAuthor
+
+
+@modelclass
+class BookNameDeniedList(Entity):
+    """Серый список названий книг."""
+
+    value: BookName

@@ -3,43 +3,18 @@ from abc import ABC
 from typing import TypeVar
 
 from sqlalchemy import Delete, Select, Update
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from domain.shared.base import Entity
 from domain.shared.values import PrimaryKey
+from infrastructure.connectors.sqla.base import SQLASessionContext
 
 RepositoryModel = TypeVar("RepositoryModel", bound=Entity)
 
 
-class BaseRepository(ABC):
+class BaseRepository(SQLASessionContext, ABC):
     """Базовый репозиторий."""
 
     model: RepositoryModel
-
-    def __init__(self, session: AsyncSession | None = None, session_maker: async_sessionmaker | None = None):
-        """Конструктор."""
-        self._session: AsyncSession | None = session
-        self._session_maker = session_maker
-
-    async def __aenter__(self):
-        """Вход в контекст для закрытия сессии на случай использования вне UoW."""
-        if self._session_maker:
-            self._session = self._session_maker()
-        return self
-
-    async def __aexit__(self, *args, **kwargs):
-        """Выход из контекста для закрытия сессии на случай использования вне UoW."""
-        await self._session.close()
-
-    @property
-    def session(self):
-        """Сессия репозитория."""
-        return self._session
-
-    @session.setter
-    def session(self, new_session: AsyncSession):
-        """Назначить сессию репозитория."""
-        self._session = new_session
 
     async def create(self, model: RepositoryModel) -> RepositoryModel:
         """Создать запись с данными модели в хранилище."""

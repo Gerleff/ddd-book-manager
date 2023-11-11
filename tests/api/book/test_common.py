@@ -1,7 +1,7 @@
 from aiohttp.test_utils import TestClient
 
-from entrypoint.web.endpoint.book import BOOKS_URL_PREFIX
-from infrastructure.connector.s3.base.client import S3Client
+from entrypoints.web.endpoints.book import BOOKS_URL_PREFIX
+from infrastructure.connectors.s3.base.client import S3Client
 from tests.api.book.test_create import _get_form_data_from
 
 

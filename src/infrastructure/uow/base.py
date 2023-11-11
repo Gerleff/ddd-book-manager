@@ -57,7 +57,7 @@ class RepositoryKeeperUnitOfWork(SQLAlchemyUnitOfWork):
     def __init__(self, session_maker: async_sessionmaker):
         """Конструктор."""
         super().__init__(session_maker)
-        self._repositories: dict[str:BaseRepository] = {}
+        self._repositories: dict[str, BaseRepository] = {}
         self._init_repositories()
 
     @classmethod
