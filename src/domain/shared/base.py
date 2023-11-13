@@ -14,7 +14,7 @@ class Entity(ABC):
 
 
 @modelclass
-class StandartEntity(ABC):
+class StandartEntity(Entity):
     """Стандартная для проекта сущность."""
 
     id: PrimaryKey | ToBeGenerated = ToBeGenerated
